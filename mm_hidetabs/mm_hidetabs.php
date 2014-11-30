@@ -28,33 +28,21 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 		$output = "//  -------------- mm_hideTabs :: Begin ------------- \n";
 		
 		foreach($tabs as $tab){
-			$tabId = prepareTabId($tab);
-			
-			switch ($tab){
-				case 'general':
-					$output .= '$j("#'.$tabId.'").hide();';
-					$output .= '$j($j("#'.$tabId.'").get(0).tabPage.tab).hide()'."\n";
-				break;
-				
-				case 'settings':
-					$output .= '$j("#'.$tabId.'").hide();';
-					$output .= '$j($j("#'.$tabId.'").get(0).tabPage.tab).hide()'."\n";
-				break;
-				
-				// =< v1.0.0 only
-				case 'meta':
-					if($modx->hasPermission('edit_doc_metatags') && $modx->config['show_meta'] != "0"){
-						$output .= '$j("#'.$tabId.'").hide();';
-						$output .= '$j($j("#'.$tabId.'").get(0).tabPage.tab).hide()'."\n";
-					}
-				break;
-				
-				case 'access':
-					$output .= '$j("#'.$tabId.'").hide();';
-					$output .= '$j($j("#'.$tabId.'").get(0).tabPage.tab).hide()'."\n";
-				break;
+			//meta for =< v1.0.0 only
+			if ($tab != 'meta' || ($modx->hasPermission('edit_doc_metatags') && $modx->config['show_meta'] != '0')){
+				$output .=
+'
+var $mm_hideTabs_tabElement = $j("#'.prepareTabId($tab).'");
+
+//If the element exists
+if ($mm_hideTabs_tabElement.length > 0){
+	//Hide the tab element
+	$mm_hideTabs_tabElement.hide();
+	//Hide the tab link
+	$j($mm_hideTabs_tabElement.get(0).tabPage.tab).hide();
+}
+';
 			}
-			
 		}
 		
 		$output .=
