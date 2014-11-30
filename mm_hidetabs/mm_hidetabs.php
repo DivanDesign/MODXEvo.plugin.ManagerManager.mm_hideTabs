@@ -32,33 +32,26 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 			
 			switch ($tab){
 				case 'general':
-					$output .= '$j("div#documentPane h2:nth-child(1)").hide(); ' . "\n";
 					$output .= '$j("#'.$tabId.'").hide();';
+					$output .= '$j($j("#'.$tabId.'").get(0).tabPage.tab).hide()'."\n";
 				break;
 				
 				case 'settings':
-					$output .= '$j("div#documentPane h2:nth-child(2)").hide(); ' . "\n";
 					$output .= '$j("#'.$tabId.'").hide();';
+					$output .= '$j($j("#'.$tabId.'").get(0).tabPage.tab).hide()'."\n";
 				break;
 				
 				// =< v1.0.0 only
 				case 'meta':
 					if($modx->hasPermission('edit_doc_metatags') && $modx->config['show_meta'] != "0"){
-						$output .= '$j("div#documentPane h2:nth-child(3)").hide(); ' . "\n";
 						$output .= '$j("#'.$tabId.'").hide();';
+						$output .= '$j($j("#'.$tabId.'").get(0).tabPage.tab).hide()'."\n";
 					}
 				break;
 				
-				// Meta tags tab is removed by default in version 1.0.1+ but can still be enabled via a preference.
-				// Access tab was only added in 1.0.1
-				// Since counting the tabs is the only way of determining this, we need to know if this has been activated
-				// If meta tabs are active, the "access" tab is index 4 in the HTML; otherwise index 3.
-				// If config['show_meta'] is NULL, this is a version before this option existed, e.g. < 1.0.1
-				// For versions => 1.0.1, 0 is the default value to not show them, 1 is the option to show them.
 				case 'access':
-					$access_index = ($modx->config['show_meta'] == "0") ? 3 : 4;
-					$output .= '$j("div#documentPane h2:nth-child('.$access_index.')").hide(); ' . "\n";
 					$output .= '$j("#'.$tabId.'").hide();';
+					$output .= '$j($j("#'.$tabId.'").get(0).tabPage.tab).hide()'."\n";
 				break;
 			}
 			
