@@ -5,7 +5,7 @@
  * 
  * @desc A widget for ManagerManager plugin that allows one or a few default tabs to be hidden on the document edit page.
  * 
- * @uses ManagerManager plugin 0.4.
+ * @uses ManagerManager plugin 0.6.2.
  * 
  * @param $tabs {'general'; 'settings'; 'access'} - The id(s) of the tab(s) this should apply to. @required
  * @param $roles {comma separated string} - The roles that the widget is applied to (when this parameter is empty then widget is applied to the all roles).
@@ -28,17 +28,19 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 		$output = "//  -------------- mm_hideTabs :: Begin ------------- \n";
 		
 		foreach($tabs as $tab){
+			$tabId = prepareTabId($tab);
+			
 			switch ($tab){
 				case 'general':
 					$output .= 'if (tpSettings.getSelectedIndex() == 0) { tpSettings.setSelectedIndex(1); } ' . "\n"; // if we are hiding the currently active tab, make another visible
 					$output .= '$j("div#documentPane h2:nth-child(1)").hide(); ' . "\n";
-					$output .= '$j("#tabGeneral").hide();';
+					$output .= '$j("#'.$tabId.'").hide();';
 				break;
 				
 				case 'settings':
 					$output .= 'if (tpSettings.getSelectedIndex() == 1) { tpSettings.setSelectedIndex(0); } ' . "\n";
 					$output .= '$j("div#documentPane h2:nth-child(2)").hide(); ' . "\n";
-					$output .= '$j("#tabSettings").hide();';
+					$output .= '$j("#'.$tabId.'").hide();';
 				break;
 				
 				// =< v1.0.0 only
@@ -46,7 +48,7 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 					if($modx->hasPermission('edit_doc_metatags') && $modx->config['show_meta'] != "0"){
 						$output .= 'if (tpSettings.getSelectedIndex() == 2) { tpSettings.setSelectedIndex(0); } ' . "\n";
 						$output .= '$j("div#documentPane h2:nth-child(3)").hide(); ' . "\n";
-						$output .= '$j("#tabMeta").hide(); ';
+						$output .= '$j("#'.$tabId.'").hide();';
 					}
 				break;
 				
@@ -60,7 +62,7 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 					$access_index = ($modx->config['show_meta'] == "0") ? 3 : 4;
 					$output .= 'if (tpSettings.getSelectedIndex() == '.($access_index-1).') { tpSettings.setSelectedIndex(0); } ' . "\n";
 					$output .= '$j("div#documentPane h2:nth-child('.$access_index.')").hide(); ' . "\n";
-					$output .= '$j("#tabAccess").hide();';
+					$output .= '$j("#'.$tabId.'").hide();';
 				break;
 			}
 			
