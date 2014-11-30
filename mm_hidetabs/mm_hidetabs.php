@@ -32,13 +32,11 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 			
 			switch ($tab){
 				case 'general':
-					$output .= 'if (tpSettings.getSelectedIndex() == 0) { tpSettings.setSelectedIndex(1); } ' . "\n"; // if we are hiding the currently active tab, make another visible
 					$output .= '$j("div#documentPane h2:nth-child(1)").hide(); ' . "\n";
 					$output .= '$j("#'.$tabId.'").hide();';
 				break;
 				
 				case 'settings':
-					$output .= 'if (tpSettings.getSelectedIndex() == 1) { tpSettings.setSelectedIndex(0); } ' . "\n";
 					$output .= '$j("div#documentPane h2:nth-child(2)").hide(); ' . "\n";
 					$output .= '$j("#'.$tabId.'").hide();';
 				break;
@@ -46,7 +44,6 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 				// =< v1.0.0 only
 				case 'meta':
 					if($modx->hasPermission('edit_doc_metatags') && $modx->config['show_meta'] != "0"){
-						$output .= 'if (tpSettings.getSelectedIndex() == 2) { tpSettings.setSelectedIndex(0); } ' . "\n";
 						$output .= '$j("div#documentPane h2:nth-child(3)").hide(); ' . "\n";
 						$output .= '$j("#'.$tabId.'").hide();';
 					}
@@ -60,13 +57,28 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 				// For versions => 1.0.1, 0 is the default value to not show them, 1 is the option to show them.
 				case 'access':
 					$access_index = ($modx->config['show_meta'] == "0") ? 3 : 4;
-					$output .= 'if (tpSettings.getSelectedIndex() == '.($access_index-1).') { tpSettings.setSelectedIndex(0); } ' . "\n";
 					$output .= '$j("div#documentPane h2:nth-child('.$access_index.')").hide(); ' . "\n";
 					$output .= '$j("#'.$tabId.'").hide();';
 				break;
 			}
 			
 		}
+		
+		$output .=
+'
+//All tabs
+var $mm_hideTabs_allTabs = $j();
+
+for (var i = 0; i < tpSettings.pages.length - 1; i++){
+	$mm_hideTabs_allTabs = $mm_hideTabs_allTabs.add(tpSettings.pages[i].tab);
+}
+
+//If the active tab is hidden
+if ($j(tpSettings.pages[tpSettings.getSelectedIndex()].tab).is(":hidden")){
+	//Activate the first visible tab
+	$mm_hideTabs_allTabs.filter(":visible").eq(0).trigger("click");
+}
+';
 		
 		$output .= "//  -------------- mm_hideTabs :: End ------------- \n";
 		
