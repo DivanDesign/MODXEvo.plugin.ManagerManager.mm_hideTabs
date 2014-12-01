@@ -20,12 +20,12 @@ function mm_hideTabs($tabs, $roles = '', $templates = ''){
 	global $modx;
 	$e = &$modx->Event;
 	
-	// if we've been supplied with a string, convert it into an array
-	$tabs = makeArray($tabs);
-	
 	// if the current page is being edited by someone in the list of roles, and uses a template in the list of templates
 	if ($e->name == 'OnDocFormRender' && useThisRule($roles, $templates)){
-		$output = "//  -------------- mm_hideTabs :: Begin ------------- \n";
+		$output = "//---------- mm_hideTabs :: Begin -----\n";
+		
+		// if we've been supplied with a string, convert it into an array
+		$tabs = makeArray($tabs);
 		
 		foreach($tabs as $tab){
 			//meta for =< v1.0.0 only
@@ -61,9 +61,9 @@ if ($j(tpSettings.pages[tpSettings.getSelectedIndex()].tab).is(":hidden")){
 }
 ';
 		
-		$output .= "//  -------------- mm_hideTabs :: End ------------- \n";
+		$output .= "//---------- mm_hideTabs :: End -----\n";
 		
-		$e->output($output . "\n");
+		$e->output($output);
 	}
 }
 ?>
