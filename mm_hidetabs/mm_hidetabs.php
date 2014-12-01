@@ -1,19 +1,22 @@
 <?php
 /**
  * mm_hideTabs
- * @version 1.1 (2012-11-13)
+ * @version 1.2 (2014-12-01)
  * 
  * @desc A widget for ManagerManager plugin that allows one or a few default tabs to be hidden on the document edit page.
  * 
  * @uses ManagerManager plugin 0.6.2.
  * 
  * @param $tabs {'general'; 'settings'; 'access'} - The id(s) of the tab(s) this should apply to. @required
- * @param $roles {comma separated string} - The roles that the widget is applied to (when this parameter is empty then widget is applied to the all roles).
- * @param $templates {comma separated string} - Id of the templates to which this widget is applied (when this parameter is empty then widget is applied to the all templates).
+ * @param $roles {comma separated string} - The roles that the widget is applied to (when this parameter is empty then widget is applied to the all roles). Default: ''.
+ * @param $templates {comma separated string} - Id of the templates to which this widget is applied (when this parameter is empty then widget is applied to the all templates). Default: ''.
  * 
- * @link http://code.divandesign.biz/modx/mm_hidetabs/1.1
+ * @event OnDocFormRender
  * 
- * @copyright 2012
+ * @link http://code.divandesign.biz/modx/mm_hidetabs/1.2
+ * 
+ * @copyright 2014, DivanDesign
+ * http://www.DivanDesign.biz
  */
 
 function mm_hideTabs($tabs, $roles = '', $templates = ''){
